@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Predictor PRO + Logs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>รวยๆ บาคาร่า</title>
     <style>
         :root {
             --bg-dark: #0f121d;
@@ -13,134 +13,65 @@
             --primary-green: #4caf50;
             --text-gold: #ffb400;
         }
-
-        * { box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-        body { background: var(--bg-dark); color: #fff; margin: 0; padding: 10px; display: flex; justify-content: center; overflow-x: hidden; }
-
-        .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 15px; }
-
-        .header-area { display: flex; justify-content: flex-end; padding: 5px 0; }
-        .settings-btn { background: rgba(255, 180, 0, 0.1); border: 1px solid var(--text-gold); color: var(--text-gold); padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; }
-
-        .prediction-display {
-            background: var(--card-dark);
-            border-radius: 20px;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #2a3142;
-            position: relative;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        #big-result { font-size: 100px; font-weight: 800; text-shadow: 0 0 30px rgba(255,255,255,0.1); }
-
-        .stats-bar {
-            background: #1a202e;
-            padding: 12px 15px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            font-weight: bold;
-        }
+        * { box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-dark); color: #fff; margin: 0; padding: 5px; display: flex; justify-content: center; overflow: hidden; height: 100vh; }
+        .container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 8px; }
+        .header-area { display: flex; justify-content: flex-end; padding: 2px 0; }
+        .settings-btn { background: rgba(255, 180, 0, 0.1); border: 1px solid var(--text-gold); color: var(--text-gold); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .prediction-display { background: var(--card-dark); border-radius: 15px; height: 120px; display: flex; align-items: center; justify-content: center; border: 1px solid #2a3142; position: relative; box-shadow: inset 0 0 15px rgba(0,0,0,0.5); }
+        #big-result { font-size: 80px; font-weight: 800; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .stats-bar { background: #1a202e; padding: 8px 12px; border-radius: 8px; display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; }
         .stat-p { color: var(--primary-blue); }
         .stat-b { color: var(--primary-red); }
-        .stat-t { color: var(--primary-green); }
-        .win-count { 
-            border: 1px solid var(--text-gold); 
-            color: var(--text-gold); 
-            padding: 0 8px; 
-            border-radius: 5px; 
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .win-count:active { background: var(--text-gold); color: #000; }
-
-        .roadmap-box {
-            background: #1a202e;
-            border-radius: 15px;
-            padding: 12px;
-            border: 1px solid #2a3142;
-            height: 210px;
-            overflow-x: auto;
-            display: flex;
-        }
-
-        .grid-column { display: flex; flex-direction: column; gap: 4px; margin-right: 4px; flex-shrink: 0; }
-        .cell { width: 28px; height: 28px; background: #252d3f; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; }
+        .win-count { border: 1px solid var(--text-gold); color: var(--text-gold); padding: 0 6px; border-radius: 4px; cursor: pointer; }
+        .roadmap-box { background: #1a202e; border-radius: 10px; padding: 8px; border: 1px solid #2a3142; height: 155px; overflow-x: auto; display: flex; scrollbar-width: none; }
+        .roadmap-box::-webkit-scrollbar { display: none; }
+        .grid-column { display: flex; flex-direction: column; gap: 3px; margin-right: 3px; flex-shrink: 0; }
+        .cell { width: 22px; height: 22px; background: #252d3f; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; }
         .cell.P { background: var(--primary-blue); }
         .cell.B { background: var(--primary-red); }
         .cell.T { background: var(--primary-green); }
 
-        .input-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .btn-input { border: none; border-radius: 15px; height: 80px; font-size: 32px; font-weight: bold; color: #fff; cursor: pointer; background: #252d3f; }
+        .status-history-grid { background: #1a202e; border-radius: 10px; padding: 8px; border: 1px solid #2a3142; display: flex; flex-direction: column; gap: 4px; }
+        .status-row { display: flex; flex-wrap: wrap; gap: 2px; min-height: 18px; }
+        .status-icon { font-size: 12px; width: 16px; text-align: center; }
+
+        .input-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .btn-input { border: none; border-radius: 12px; height: 60px; font-size: 24px; font-weight: bold; color: #fff; cursor: pointer; background: #252d3f; }
         .btn-input.P { border-bottom: 4px solid var(--primary-blue); }
         .btn-input.B { border-bottom: 4px solid var(--primary-red); }
-
-        .action-group { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; }
-        .btn-action { background: #252d3f; border: none; border-radius: 12px; padding: 15px; color: #fff; font-weight: bold; cursor: pointer; }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background: var(--card-dark);
-            width: 100%;
-            max-width: 350px;
-            border-radius: 20px;
-            border: 1px solid var(--text-gold);
-            padding: 20px;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-gold); font-weight: bold; }
-        .log-list { overflow-y: auto; flex-grow: 1; font-size: 14px; }
-        .log-item { padding: 10px 0; border-bottom: 1px solid #2a3142; display: flex; justify-content: space-between; }
-        .log-win { color: var(--primary-green); }
-        .log-loss { color: var(--primary-red); }
-        .close-btn { background: #444; color: #fff; border: none; padding: 10px; border-radius: 10px; margin-top: 15px; cursor: pointer; }
+        .action-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-action { background: #252d3f; border: none; border-radius: 10px; padding: 12px; color: #fff; font-size: 13px; font-weight: bold; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: var(--card-dark); width: 100%; border-radius: 15px; border: 1px solid var(--text-gold); padding: 15px; max-height: 85vh; display: flex; flex-direction: column; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="header-area">
         <button class="settings-btn" onclick="toggleMaxSteps()">ไม้ทบ: <span id="max-steps-display">4</span></button>
     </div>
-
     <div class="prediction-display">
         <div id="big-result">-</div>
     </div>
-
     <div class="stats-bar">
         <div>
             <span class="stat-p">P:<span id="count-p">0</span></span> &nbsp;
             <span class="stat-b">B:<span id="count-b">0</span></span> &nbsp;
-            <span class="stat-t">T:<span id="count-t">0</span></span> &nbsp;
             <span style="color:#888">A:<span id="count-a">0</span></span>
         </div>
         <div class="win-count" onclick="openModal()">ชนะ: <span id="win-count-display">0</span></div>
     </div>
-
     <div class="roadmap-box" id="roadmap-container"></div>
-
+    <div class="status-history-grid">
+        <div class="status-row" id="status-row-1"></div>
+        <div class="status-row" id="status-row-2"></div>
+    </div>
     <div class="input-group">
         <button class="btn-input P" onclick="addResult('P')">P</button>
-        <button class="btn-input T" onclick="addResult('T')" style="font-size: 20px;">T</button>
+        <button class="btn-input T" onclick="addResult('T')" style="font-size: 18px;">T</button>
         <button class="btn-input B" onclick="addResult('B')">B</button>
     </div>
-
     <div class="action-group">
         <button class="btn-action" onclick="undo()">ย้อนกลับ</button>
         <button class="btn-action" onclick="resetAll()" style="color:var(--primary-red)">ล้างข้อมูล</button>
@@ -149,13 +80,8 @@
 
 <div id="logModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <span>รายละเอียดประวัติ</span>
-            <span id="summary-logs" style="font-size: 12px; color: #888;"></span>
-        </div>
-        <div class="log-list" id="log-list">
-            </div>
-        <button class="close-btn" onclick="closeModal()">ปิดหน้าต่าง</button>
+        <div id="log-list" style="overflow-y:auto"></div>
+        <button class="btn-action" onclick="closeModal()" style="margin-top:10px">ปิด</button>
     </div>
 </div>
 
@@ -167,101 +93,96 @@
     let currentStep = 1;
 
     const patternOrder = ["MMM", "TTT", "MTT", "TMM", "MTM", "TMT", "MMT", "TTM"];
-    const patterns = {
-        "MMM": ["M", "M", "M"], "TTT": ["T", "T", "T"],
-        "MTT": ["M", "T", "T"], "TMM": ["T", "M", "M"],
-        "MTM": ["M", "T", "M"], "TMT": ["T", "M", "T"],
-        "MMT": ["M", "M", "T"], "TTM": ["T", "T", "M"]
-    };
-
-    renderAll();
+    const patterns = { "MMM": ["M","M","M"], "TTT": ["T","T","T"], "MTT": ["M","T","T"], "TMM": ["T","M","M"], "MTM": ["M","T","M"], "TMT": ["T","M","T"], "MMT": ["M","M","T"], "TTM": ["T","T","M"] };
 
     function addResult(val) {
         history.push(val);
-        processLogic();
+        // จะรัน Logic เฉพาะเมื่อค่าไม่ใช่ T
+        if (val !== 'T') {
+            processLogic();
+        }
         saveAndRender();
     }
 
-    function undo() {
-        if (history.length > 0) {
-            history.pop();
-            // เมื่อ undo ระบบจะล้างสถานะชั่วคราวเพื่อให้คำณวนใหม่
-            lockedPattern = null;
-            currentStep = 1;
-            // หมายเหตุ: ในระบบจริงการ undo log อาจจะซับซ้อน จึงเลือกให้ลบเฉพาะ log ล่าสุด
-            if(logs.length > 0) logs.pop(); 
-            processLogic();
-            saveAndRender();
-        }
+    function undo() { 
+        if (history.length > 0) { 
+            history.pop(); 
+            // Re-calculation: คำนวณใหม่ทั้งหมดจากประวัติที่เหลือ เพื่อให้สถานะไม้ทบถูกต้องที่สุด
+            rebuildState();
+            saveAndRender(); 
+        } 
     }
 
-    function resetAll() {
-        if(confirm("ล้างข้อมูลและประวัติทั้งหมด?")) {
-            history = []; logs = []; lockedPattern = null; currentStep = 1;
-            saveAndRender();
-        }
+    function rebuildState() {
+        lockedPattern = null;
+        currentStep = 1;
+        logs = [];
+        const tempHistory = [...history];
+        history = []; // ล้างชั่วคราวเพื่อวนลูปใส่ใหม่
+        tempHistory.forEach(val => {
+            history.push(val);
+            if (val !== 'T') processLogic();
+        });
     }
 
-    function toggleMaxSteps() {
-        maxSteps = maxSteps >= 6 ? 1 : maxSteps + 1;
-        localStorage.setItem('max_steps_v5', maxSteps);
-        lockedPattern = null; currentStep = 1;
-        renderAll();
+    function resetAll() { if(confirm("ล้างข้อมูล?")) { history = []; logs = []; lockedPattern = null; currentStep = 1; saveAndRender(); } }
+    
+    function toggleMaxSteps() { 
+        maxSteps = maxSteps >= 6 ? 1 : maxSteps + 1; 
+        localStorage.setItem('max_steps_v5', maxSteps); 
+        rebuildState(); 
+        saveAndRender();
     }
 
     function processLogic() {
-        const data = history.filter(x => x !== 'T');
-        if (data.length < 4) {
-            lockedPattern = null;
-            currentStep = 1;
-            return;
-        }
-
+        // กรองเอาเฉพาะ P และ B มาคำนวณเท่านั้น
+        const dataOnlyPB = history.filter(x => x !== 'T');
+        if (dataOnlyPB.length < 4) { lockedPattern = null; currentStep = 1; return; }
+        
         if (lockedPattern) {
-            const lastActual = data[data.length - 1];
-            const lastPred = getPred(lockedPattern, data.length - 1, data);
+            const lastActual = dataOnlyPB[dataOnlyPB.length - 1];
+            // หาตัวพยากรณ์โดยอิงจาก index ของข้อมูลที่ไม่มี T
+            const lastPred = getPred(lockedPattern, dataOnlyPB.length - 1, dataOnlyPB);
             
-            if (lastActual === lastPred) {
-                // บันทึก Log ชนะ
-                logs.push({ round: logs.length + 1, status: 'win', step: currentStep });
-                currentStep = 1;
-            } else {
-                if (currentStep >= maxSteps) {
-                    // บันทึก Log แพ้ (ทบแตก)
-                    logs.push({ round: logs.length + 1, status: 'loss', step: maxSteps });
-                    currentStep = 1;
-                    lockedPattern = null;
-                } else {
-                    currentStep++;
-                }
+            if (lastActual === lastPred) { 
+                logs.push({status: 'win', step: currentStep}); 
+                currentStep = 1; 
+            } else { 
+                if (currentStep >= maxSteps) { 
+                    logs.push({status: 'loss', step: maxSteps}); 
+                    currentStep = 1; 
+                    lockedPattern = null; 
+                } else { 
+                    currentStep++; 
+                } 
             }
         }
-
-        if (!lockedPattern) {
-            for (let p of patternOrder) {
-                if (isTriple(p, data)) {
-                    lockedPattern = p;
-                    currentStep = 1;
-                    break;
-                }
-            }
+        
+        // ถ้ายังไม่มีการล็อคแพทเทิร์น ให้หาใหม่จากข้อมูลที่ไม่มี T
+        if (!lockedPattern) { 
+            for (let p of patternOrder) { 
+                if (isTriple(p, dataOnlyPB)) { 
+                    lockedPattern = p; 
+                    currentStep = 1; 
+                    break; 
+                } 
+            } 
         }
     }
 
-    function isTriple(p, data) {
-        if (data.length < 6) return false;
-        let w = 0;
-        for (let i = data.length - 1; i >= 3; i--) {
-            if (data[i] === getPred(p, i, data)) w++;
-            else break;
-        }
-        return w >= 3;
+    function isTriple(p, data) { 
+        if (data.length < 6) return false; 
+        let w = 0; 
+        for (let i = data.length-1; i >= 3; i--) { 
+            if (data[i] === getPred(p, i, data)) w++; else break; 
+        } 
+        return w >= 3; 
     }
 
-    function getPred(p, i, data) {
-        let step = (i - 3) % 3;
-        let base = data[i - 3];
-        return (patterns[p][step] === "M") ? base : (base === 'P' ? 'B' : 'P');
+    function getPred(p, i, data) { 
+        let step = (i - 3) % 3; 
+        let base = data[i-3]; 
+        return (patterns[p][step] === "M") ? base : (base === 'P' ? 'B' : 'P'); 
     }
 
     function saveAndRender() {
@@ -274,70 +195,59 @@
         document.getElementById('max-steps-display').innerText = maxSteps;
         document.getElementById('count-p').innerText = history.filter(x => x === 'P').length;
         document.getElementById('count-b').innerText = history.filter(x => x === 'B').length;
-        document.getElementById('count-t').innerText = history.filter(x => x === 'T').length;
         document.getElementById('count-a').innerText = history.length;
-        
-        const wins = logs.filter(l => l.status === 'win').length;
-        document.getElementById('win-count-display').innerText = wins;
+        document.getElementById('win-count-display').innerText = logs.filter(l => l.status === 'win').length;
 
+        // Roadmap (แสดงครบทุกตัวรวม T)
         const container = document.getElementById('roadmap-container');
         container.innerHTML = "";
-        let colDiv = document.createElement('div');
-        colDiv.className = 'grid-column';
+        let colDiv = document.createElement('div'); colDiv.className = 'grid-column';
         for (let i = 0; i < history.length; i++) {
-            if (i > 0 && i % 6 === 0) {
-                container.appendChild(colDiv);
-                colDiv = document.createElement('div');
-                colDiv.className = 'grid-column';
-            }
-            const cell = document.createElement('div');
-            cell.className = `cell ${history[i]}`;
-            cell.innerText = history[i];
-            colDiv.appendChild(cell);
+            if (i > 0 && i % 6 === 0) { container.appendChild(colDiv); colDiv = document.createElement('div'); colDiv.className = 'grid-column'; }
+            const cell = document.createElement('div'); cell.className = `cell ${history[i]}`; cell.innerText = history[i]; colDiv.appendChild(cell);
         }
         if (colDiv.children.length > 0 || history.length === 0) {
-            for (let j = colDiv.children.length; j < 6; j++) {
-                const empty = document.createElement('div');
-                empty.className = 'cell';
-                colDiv.appendChild(empty);
-            }
+            for (let j = colDiv.children.length; j < 6; j++) { const empty = document.createElement('div'); empty.className = 'cell'; colDiv.appendChild(empty); }
             container.appendChild(colDiv);
         }
-        setTimeout(() => { container.scrollLeft = container.scrollWidth; }, 50);
+        container.scrollLeft = container.scrollWidth;
 
+        // ✅❌ History
+        const r1 = document.getElementById('status-row-1');
+        const r2 = document.getElementById('status-row-2');
+        r1.innerHTML = ""; r2.innerHTML = "";
+        const half = Math.ceil(logs.length / 2);
+        logs.forEach((l, idx) => {
+            const s = document.createElement('span'); s.className = 'status-icon'; s.innerText = l.status === 'win' ? '✅' : '❌';
+            if (idx < half) r1.appendChild(s); else r2.appendChild(s);
+        });
+
+        // Prediction Result (อิงตามข้อมูลที่ไม่มี T)
         const bigRes = document.getElementById('big-result');
-        const data = history.filter(x => x !== 'T');
-        if (lockedPattern && data.length >= 3) {
-            const next = getPred(lockedPattern, data.length, data);
+        const dataOnlyPB = history.filter(x => x !== 'T');
+        if (lockedPattern && dataOnlyPB.length >= 3) {
+            const next = getPred(lockedPattern, dataOnlyPB.length, dataOnlyPB);
             bigRes.innerText = `${currentStep}${next}`;
             bigRes.style.color = next === 'P' ? 'var(--primary-blue)' : 'var(--primary-red)';
-        } else {
-            bigRes.innerText = "-";
-            bigRes.style.color = "#444";
+        } else { 
+            bigRes.innerText = "-"; 
+            bigRes.style.color = "#444"; 
         }
     }
 
-    // Modal Logic
     function openModal() {
-        const list = document.getElementById('log-list');
-        list.innerHTML = "";
-        logs.forEach((log, index) => {
-            const item = document.createElement('div');
-            item.className = 'log-item';
-            const statusText = log.status === 'win' 
-                ? `<span class="log-win">ชนะ (ไม้ ${log.step})</span>` 
-                : `<span class="log-loss">แพ้ (ทบครบ ${log.step} ไม้)</span>`;
-            item.innerHTML = `<span>รอบที่ ${index + 1}</span> ${statusText}`;
+        const list = document.getElementById('log-list'); list.innerHTML = "";
+        logs.forEach((l, i) => {
+            const item = document.createElement('div'); item.className = 'log-item';
+            item.style = "padding: 8px 0; border-bottom: 1px solid #2a3142; display: flex; justify-content: space-between; font-size: 13px;";
+            item.innerHTML = `<span>รอบ #${i+1}</span> <span>${l.status === 'win' ? '✅ ชนะ' : '❌ แพ้'} (ไม้ ${l.step})</span>`;
             list.appendChild(item);
         });
         document.getElementById('logModal').style.display = 'flex';
-        document.getElementById('summary-logs').innerText = `ทั้งหมด ${logs.length} รอบ`;
     }
-
-    function closeModal() {
-        document.getElementById('logModal').style.display = 'none';
-    }
+    function closeModal() { document.getElementById('logModal').style.display = 'none'; }
+    
+    renderAll();
 </script>
-
 </body>
 </html>
