@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>รวยๆ บาคาร่า</title>
+    <title>Smart Predictor PRO + Blink Indicator</title>
     <style>
         :root {
             --bg-dark: #0f121d;
@@ -34,15 +34,27 @@
         .cell.B { background: var(--primary-red); }
         .cell.T { background: var(--primary-green); }
 
-        /* History Grid Section */
+        /* History Section & Blink */
         .history-section { background: #1a202e; border-radius: 10px; padding: 8px; border: 1px solid #2a3142; position: relative; }
         .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
         .row-toggle { font-size: 10px; color: var(--text-gold); border: 1px solid var(--text-gold); padding: 1px 5px; border-radius: 4px; cursor: pointer; }
         
         .status-history-grid { display: flex; flex-direction: column; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-        .status-history-grid::-webkit-scrollbar { display: none; }
-        .status-row { display: flex; gap: 4px; min-height: 18px; white-space: nowrap; }
+        .status-row { display: flex; gap: 4px; min-height: 22px; white-space: nowrap; align-items: center; }
         .status-icon { font-size: 14px; min-width: 18px; text-align: center; }
+
+        /* ไฟกะพริบ */
+        .blink-dot {
+            color: var(--text-gold);
+            font-size: 18px;
+            margin-left: 5px;
+            animation: breathing 1.2s ease-in-out infinite;
+            display: none; /* ปิดไว้ก่อน จะเปิดผ่าน JS */
+        }
+        @keyframes breathing {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); text-shadow: 0 0 10px var(--text-gold); }
+        }
 
         .input-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .btn-input { border: none; border-radius: 12px; height: 60px; font-size: 24px; font-weight: bold; color: #fff; cursor: pointer; background: #252d3f; }
@@ -79,7 +91,7 @@
 
     <div class="history-section">
         <div class="history-header">
-            <span style="font-size: 10px; color: #666;">ประวัติล่าสุด</span>
+            <span style="font-size: 10px; color: #666;">ประวัติ / สถานะสาย</span>
             <div class="row-toggle" onclick="toggleHistoryRows()">โหมด: <span id="row-mode-display">2</span> แถว</div>
         </div>
         <div class="status-history-grid" id="history-scroll">
@@ -236,7 +248,7 @@
         }
         container.scrollLeft = container.scrollWidth;
 
-        // ✅❌ History Real-time (Dynamic Rows)
+        // ✅❌ History with Blink Indicator
         const rows = [
             document.getElementById('status-row-1'),
             document.getElementById('status-row-2'),
@@ -250,16 +262,25 @@
             const s = document.createElement('span');
             s.className = 'status-icon';
             s.innerText = l.status === 'win' ? '✅' : '❌';
-            
-            // เรียงสลับแถวตามจำนวนแถวที่เลือก
             const targetRow = idx % historyRows;
             rows[targetRow].appendChild(s);
         });
+
+        // ตรวจสอบว่ารอบถัดไปจะลงแถวไหน แล้วใส่ไฟกะพริบ
+        const nextLogIndex = logs.length;
+        const activeRowIndex = nextLogIndex % historyRows;
+        
+        // สร้างไฟกะพริบ
+        const blink = document.createElement('span');
+        blink.className = 'blink-dot';
+        blink.style.display = 'inline-block';
+        blink.innerText = '●';
+        rows[activeRowIndex].appendChild(blink);
         
         const hScroll = document.getElementById('history-scroll');
         hScroll.scrollLeft = hScroll.scrollWidth;
 
-        // Prediction
+        // Prediction Result
         const bigRes = document.getElementById('big-result');
         const dataOnlyPB = history.filter(x => x !== 'T');
         if (lockedPattern && dataOnlyPB.length >= 3) {
